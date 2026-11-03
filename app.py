@@ -4,6 +4,7 @@ Run with:  python app.py
 """
 import logging
 from pathlib import Path
+import os
 
 from flask import Flask, jsonify, render_template, request
 from werkzeug.exceptions import HTTPException
@@ -71,6 +72,11 @@ def _register_error_handlers(app):
         return render_template("error.html", code=500, message=message), 500
 
 
+application = create_app()
+
 if __name__ == "__main__":
-    application = create_app()
-    application.run(host=application.config["HOST"], port=application.config["PORT"], debug=application.config["DEBUG"])
+    application.run(
+        host=application.config["HOST"],
+        port=int(os.environ.get("PORT", application.config["PORT"])),
+        debug=application.config["DEBUG"]
+    )
