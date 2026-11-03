@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Error {{ code }} - AI Meeting Assistant{% endblock %}
+{% block content %}
+<div class="container content-wrap text-center py-5">
+  <h1 class="display-4 fw-bold text-primary">{{ code }}</h1>
+  <p class="lead">{{ message }}</p>
+  <a class="btn btn-primary rounded-pill px-4" href="{{ url_for('main.index') }}"><i class="bi bi-house-door me-2"></i>Back to home</a>
+</div>
+{% endblock %}

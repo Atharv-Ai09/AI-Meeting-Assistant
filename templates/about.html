@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}About - AI Meeting Assistant{% endblock %}
+
+{% block content %}
+<section class="hero hero-small">
+  <div class="container text-center">
+    <h1 class="hero-title h2">About the Project</h1>
+    <p class="hero-subtitle mb-0">Speech Recognition and Meeting Summarization Using AI</p>
+  </div>
+</section>
+
+<div class="container content-wrap">
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="card app-card mb-4"><div class="card-body p-4">
+        <h2 class="h5">Project overview</h2>
+        <p>AI Meeting Assistant converts a meeting recording into a written transcript and creates a concise summary with key points, decisions and action items. All AI models are open-source and run locally, so no paid API key is needed and recordings are not sent to a third-party service.</p>
+        <h2 class="h5 mt-4">How it works</h2>
+        <ol class="mb-0">
+          <li>The audio is validated and converted with FFmpeg to 16 kHz mono WAV.</li>
+          <li>Long audio is split into chunks at quiet moments.</li>
+          <li>OpenAI Whisper ({{ whisper_models|join(' / ') }}) transcribes each chunk and the text is combined.</li>
+          <li>A Hugging Face model (<code>{{ summarizer }}</code>) summarises the transcript chunk by chunk.</li>
+          <li>Key points, decisions and action items are extracted from sentences that actually appear in the transcript.</li>
+        </ol>
+      </div></div>
+      <div class="card app-card"><div class="card-body p-4">
+        <h2 class="h5">Accuracy and limitations</h2>
+        <ul class="mb-0">
+          <li>The summary is AI-generated and may rephrase or miss details. Always check it against the transcript.</li>
+          <li>Decisions and action items are never invented. Missing owners or deadlines are shown as "Not specified."</li>
+          <li>Speech recognition quality depends on audio clarity, accents and background noise.</li>
+          <li>Extraction rules and the summarisation model work best with English transcripts.</li>
+          <li>Long recordings take time on a CPU. Real-time transcription is not supported.</li>
+        </ul>
+      </div></div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card app-card mb-4"><div class="card-body p-4">
+        <h2 class="h5">Student details</h2>
+        <dl class="mb-0">
+          <dt>Name</dt><dd>Atharv Shetty</dd>
+          <dt>Register number</dt><dd>8080110</dd>
+          <dt>College</dt><dd>GTTC Belagavi</dd>
+          <dt>Department</dt><dd>Artificial Intelligence and Machine Learning</dd>
+        </dl>
+      </div></div>
+      <div class="card app-card"><div class="card-body p-4">
+        <h2 class="h5">Technology stack</h2>
+        <ul class="mb-0">
+          <li>Frontend: HTML5, CSS3, JavaScript, Bootstrap 5</li>
+          <li>Backend: Python, Flask, REST API</li>
+          <li>Speech recognition: OpenAI Whisper, PyTorch</li>
+          <li>Summarisation: Hugging Face Transformers</li>
+          <li>Audio: FFmpeg, librosa, soundfile, pydub</li>
+        </ul>
+      </div></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

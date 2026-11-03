@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Meeting Results - AI Meeting Assistant{% endblock %}
+
+{% block content %}
+<section class="hero hero-small">
+  <div class="container text-center">
+    <h1 class="hero-title h2">Meeting Results</h1>
+    <p class="hero-subtitle mb-0">Review the transcript, summary and action items.</p>
+  </div>
+</section>
+
+<div class="container content-wrap" id="resultPage" data-report-id="{{ report.id }}"
+     data-summary-length="{{ report.summary_length }}" data-language-code="{{ report.language_code }}">
+  <div id="alertArea" aria-live="polite">
+    {% for w in report.warnings %}
+    <div class="alert alert-warning"><i class="bi bi-exclamation-triangle me-2"></i>{{ w }}</div>
+    {% endfor %}
+  </div>
+
+  <div class="card app-card mb-4"><div class="card-body p-4">
+    <h2 class="h5 mb-3"><i class="bi bi-music-note-beamed me-2 text-primary"></i>Audio information</h2>
+    <div class="row g-3">
+      <div class="col-md-3"><div class="stat"><span class="stat-label">Filename</span><span class="stat-value">{{ report.filename }}</span></div></div>
+      <div class="col-md-3"><div class="stat"><span class="stat-label">Duration</span><span class="stat-value">{{ report.duration_text }}</span></div></div>
+      <div class="col-md-3"><div class="stat"><span class="stat-label">Detected language</span><span class="stat-value">{{ report.language }}</span></div></div>
+      <div class="col-md-3"><div class="stat"><span class="stat-label">Speech model</span><span class="stat-value">Whisper {{ report.whisper_model }}</span></div></div>
+    </div>
+  </div></div>
+
+  <div class="card app-card mb-4"><div class="card-body p-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+      <h2 class="h5 mb-0"><i class="bi bi-chat-left-text me-2 text-primary"></i>Transcript</h2>
+      <span class="small text-muted" id="wordCount"></span>
+    </div>
+    <textarea id="transcriptArea" class="form-control transcript-area" rows="12" spellcheck="true"
+              aria-label="Editable transcript">{{ report.transcript }}</textarea>
+    <div class="d-flex flex-wrap gap-2 mt-3">
+      <button type="button" id="copyBtn" class="btn btn-outline-primary rounded-pill"><i class="bi bi-clipboard me-2"></i>Copy transcript</button>
+      <button type="button" id="downloadEditedBtn" class="btn btn-outline-primary rounded-pill"><i class="bi bi-download me-2"></i>Download transcript</button>
+      <div class="input-group ms-md-auto regen-group">
+        <select id="regenLength" class="form-select" aria-label="Summary length">
+          {% for l in summary_lengths %}<option value="{{ l }}" {% if l == report.summary_length %}selected{% endif %}>{{ l|capitalize }}</option>{% endfor %}
+        </select>
+        <button type="button" id="regenBtn" class="btn btn-primary"><i class="bi bi-arrow-repeat me-2"></i>Regenerate summary</button>
+      </div>
+    </div>
+    <div id="regenStatus" class="small text-muted mt-2 d-none"></div>
+  </div></div>
+
+  <div class="card app-card mb-4"><div class="card-body p-4">
+    <h2 class="h5 mb-3"><i class="bi bi-card-text me-2 text-primary"></i>AI summary</h2>
+    <h3 class="h6">Meeting summary <span class="badge badge-soft">AI-generated</span></h3>
+    <p class="mb-4">{{ report.summary or 'A summary is not available.' }}</p>
+
+    <h3 class="h6">Key discussion points <span class="badge badge-soft">extracted from transcript</span></h3>
+    {% if report.key_points %}<ul class="mb-4">{% for p in report.key_points %}<li>{{ p }}</li>{% endfor %}</ul>
+    {% else %}<p class="text-muted mb-4">No key discussion points could be extracted.</p>{% endif %}
+
+    <h3 class="h6">Decisions made <span class="badge badge-soft">extracted from transcript</span></h3>
+    {% if report.decisions %}<ul class="mb-0">{% for d in report.decisions %}<li>{{ d }}</li>{% endfor %}</ul>
+    {% else %}<p class="text-muted mb-0">No explicit decisions identified.</p>{% endif %}
+  </div></div>
+
+  <div class="card app-card mb-4"><div class="card-body p-4">
+    <h2 class="h5 mb-3"><i class="bi bi-list-check me-2 text-primary"></i>Action items</h2>
+    {% if report.action_items %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle action-table">
+        <thead><tr><th scope="col" style="width:60px">No.</th><th scope="col">Task</th><th scope="col">Responsible Person</th><th scope="col">Deadline</th></tr></thead>
+        <tbody>
+        {% for item in report.action_items %}
+          <tr><td>{{ loop.index }}</td><td>{{ item.task }}</td><td>{{ item.responsible }}</td><td>{{ item.deadline }}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}<p class="text-muted mb-0">No specific action items identified.</p>{% endif %}
+  </div></div>
+
+  <div class="card app-card mb-4"><div class="card-body p-4">
+    <h2 class="h5 mb-3"><i class="bi bi-box-arrow-down me-2 text-primary"></i>Export options</h2>
+    <div class="d-flex flex-wrap gap-2">
+      <a class="btn btn-outline-primary rounded-pill" href="{{ downloads.transcript }}"><i class="bi bi-file-earmark-text me-2"></i>Download transcript (TXT)</a>
+      <a class="btn btn-outline-primary rounded-pill" href="{{ downloads.summary }}"><i class="bi bi-file-earmark-text me-2"></i>Download summary (TXT)</a>
+      <a class="btn btn-primary rounded-pill" href="{{ downloads.report }}"><i class="bi bi-file-earmark-arrow-down me-2"></i>Download full report (TXT)</a>
+    </div>
+    <p class="small text-muted mt-3 mb-0">Reports are stored temporarily on this computer and removed automatically after 24 hours.</p>
+  </div></div>
+
+  <div class="text-center mb-5">
+    <a class="btn btn-primary btn-lg rounded-pill px-5" href="{{ url_for('main.index') }}"><i class="bi bi-plus-circle me-2"></i>Process Another Meeting</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% block title %}AI Meeting Assistant - Speech Recognition &amp; Summarization{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container text-center">
+    <h1 class="hero-title">AI Meeting Assistant</h1>
+    <p class="hero-subtitle">Transform your meeting recordings into accurate transcripts and actionable summaries.</p>
+  </div>
+</section>
+
+<div class="container content-wrap">
+  <div id="alertArea" aria-live="polite"></div>
+
+  <div class="card app-card mb-4">
+    <div class="card-body p-4">
+      <h2 class="h5 mb-3"><i class="bi bi-soundwave me-2 text-primary"></i>1. Add your meeting audio</h2>
+
+      <div id="dropZone" class="drop-zone" tabindex="0" role="button" aria-label="Upload audio file">
+        <i class="bi bi-cloud-arrow-up drop-icon"></i>
+        <p class="mb-1 fw-semibold">Drag and drop an audio file here</p>
+        <p class="text-muted small mb-3">Supported formats: {{ extensions|map('upper')|join(', ') }} &middot; up to {{ max_upload_mb }} MB</p>
+        <button type="button" id="uploadBtn" class="btn btn-primary rounded-pill px-4">
+          <i class="bi bi-upload me-2"></i>Upload audio
+        </button>
+        <input type="file" id="fileInput" class="d-none"
+               accept="{% for e in extensions %}.{{ e }}{% if not loop.last %},{% endif %}{% endfor %},audio/*">
+      </div>
+
+      <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
+        <button type="button" id="recordBtn" class="btn btn-outline-primary rounded-pill">
+          <i class="bi bi-record-circle me-2"></i>Record audio
+        </button>
+        <button type="button" id="stopBtn" class="btn btn-danger rounded-pill" disabled>
+          <i class="bi bi-stop-circle me-2"></i>Stop recording
+        </button>
+        <button type="button" id="clearBtn" class="btn btn-outline-secondary rounded-pill" disabled>
+          <i class="bi bi-trash me-2"></i>Clear audio
+        </button>
+        <span id="recordTimer" class="record-timer d-none"><i class="bi bi-circle-fill me-1"></i><span id="recordTime">0:00</span></span>
+      </div>
+
+      <div id="previewBox" class="preview-box d-none mt-3">
+        <div class="small text-muted mb-1" id="fileInfo"></div>
+        <audio id="audioPlayer" controls class="w-100"></audio>
+      </div>
+    </div>
+  </div>
+
+  <div class="card app-card mb-4">
+    <div class="card-body p-4">
+      <h2 class="h5 mb-3"><i class="bi bi-sliders me-2 text-primary"></i>2. Processing options</h2>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label for="whisperModel" class="form-label">Speech recognition model</label>
+          <select id="whisperModel" class="form-select rounded-pill">
+            {% for m in whisper_models %}
+            <option value="{{ m }}" {% if m == default_model %}selected{% endif %}>
+              Whisper {{ m }}{% if m == 'base' %} (faster){% else %} (more accurate){% endif %}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="summaryLength" class="form-label">Summary length</label>
+          <select id="summaryLength" class="form-select rounded-pill">
+            <option value="short">Short</option>
+            <option value="medium" selected>Medium</option>
+            <option value="detailed">Detailed</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="language" class="form-label">Language</label>
+          <select id="language" class="form-select rounded-pill">
+            {% for code, name in languages.items() %}
+            <option value="{{ code }}" {% if code == 'auto' %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <p class="small text-muted mt-3 mb-0">
+        <i class="bi bi-info-circle me-1"></i>The first run downloads the AI models and can take several minutes.
+        Long recordings are processed in segments and are not transcribed in real time.
+      </p>
+    </div>
+  </div>
+
+  <div class="text-center mb-4">
+    <button type="button" id="processBtn" class="btn btn-primary btn-lg rounded-pill px-5" disabled>
+      <i class="bi bi-magic me-2"></i>Transcribe &amp; Summarize
+    </button>
+  </div>
+
+  <div id="statusBox" class="card app-card mb-4 d-none">
+    <div class="card-body p-4">
+      <div class="d-flex align-items-center gap-3 mb-2">
+        <div class="spinner-border text-primary" id="statusSpinner" role="status" aria-hidden="true"></div>
+        <div>
+          <div class="fw-semibold" id="statusTitle">Working...</div>
+          <div class="small text-muted" id="statusDetail"></div>
+        </div>
+        <div class="ms-auto small text-muted" id="statusElapsed"></div>
+      </div>
+      <div class="progress" style="height: 10px;">
+        <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="resultsSection" class="d-none mb-5" aria-live="polite">
+    <div class="card app-card">
+      <div class="card-body p-4">
+        <h2 class="h5 mb-3"><i class="bi bi-check-circle-fill text-success me-2"></i>Results</h2>
+        <div class="row g-3 mb-3">
+          <div class="col-md-4"><div class="stat"><span class="stat-label">File</span><span id="resFile" class="stat-value"></span></div></div>
+          <div class="col-md-4"><div class="stat"><span class="stat-label">Duration</span><span id="resDuration" class="stat-value"></span></div></div>
+          <div class="col-md-4"><div class="stat"><span class="stat-label">Detected language</span><span id="resLanguage" class="stat-value"></span></div></div>
+        </div>
+        <h3 class="h6">Meeting summary <span class="badge badge-soft">AI-generated</span></h3>
+        <p id="resSummary" class="mb-3"></p>
+        <h3 class="h6">Key points <span class="badge badge-soft">from transcript</span></h3>
+        <ul id="resKeyPoints" class="mb-3"></ul>
+        <h3 class="h6">Action items <span class="badge badge-soft">from transcript</span></h3>
+        <div id="resActions" class="mb-3"></div>
+        <h3 class="h6">Transcript</h3>
+        <pre id="resTranscript" class="transcript-preview"></pre>
+        <div id="resWarnings" class="mb-3"></div>
+        <div class="d-flex flex-wrap gap-2">
+          <a id="resOpen" class="btn btn-primary rounded-pill" href="#"><i class="bi bi-box-arrow-up-right me-2"></i>Open full results</a>
+          <a id="dlTranscript" class="btn btn-outline-primary rounded-pill" href="#"><i class="bi bi-file-earmark-text me-2"></i>Transcript (TXT)</a>
+          <a id="dlSummary" class="btn btn-outline-primary rounded-pill" href="#"><i class="bi bi-file-earmark-text me-2"></i>Summary (TXT)</a>
+          <a id="dlReport" class="btn btn-outline-primary rounded-pill" href="#"><i class="bi bi-file-earmark-arrow-down me-2"></i>Full report (TXT)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="mb-5">
+    <h2 class="h4 text-center mb-4">Features</h2>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="card app-card h-100"><div class="card-body">
+        <i class="bi bi-mic feature-icon"></i><h3 class="h6">Upload or record</h3>
+        <p class="small text-muted mb-0">Drop an audio file or record directly in your browser.</p></div></div></div>
+      <div class="col-md-4"><div class="card app-card h-100"><div class="card-body">
+        <i class="bi bi-chat-left-text feature-icon"></i><h3 class="h6">Whisper transcription</h3>
+        <p class="small text-muted mb-0">Open-source speech recognition running on your own computer, with language detection.</p></div></div></div>
+      <div class="col-md-4"><div class="card app-card h-100"><div class="card-body">
+        <i class="bi bi-card-text feature-icon"></i><h3 class="h6">AI summary</h3>
+        <p class="small text-muted mb-0">Short, medium or detailed summaries, including long meetings.</p></div></div></div>
+      <div class="col-md-4"><div class="card app-card h-100"><div class="card-body">
+        <i class="bi bi-list-check feature-icon"></i><h3 class="h6">Decisions &amp; action items</h3>
+        <p class="small text-muted mb-0">Taken from the transcript only. Missing owners or deadlines show as "Not specified."</p></div></div></div>
+      <div class="col-md-4"><div class="card app-card h-100"><div class="card-body">
+        <i class="bi bi-pencil-square feature-icon"></i><h3 class="h6">Editable transcript</h3>
+        <p class="small text-muted mb-0">Correct recognition mistakes and regenerate the summary.</p></div></div></div>
+      <div class="col-md-4"><div class="card app-card h-100"><div class="card-body">
+        <i class="bi bi-download feature-icon"></i><h3 class="h6">TXT export</h3>
+        <p class="small text-muted mb-0">Download the transcript, the summary or the complete meeting report.</p></div></div></div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.APP_CONFIG = {
+    maxBytes: {{ max_upload_mb * 1024 * 1024 }},
+    maxMb: {{ max_upload_mb }},
+    extensions: {{ extensions|tojson }}
+  };
+</script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

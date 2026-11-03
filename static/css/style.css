@@ -1,0 +1,75 @@
+:root {
+  --navy: #0f2747;
+  --blue: #1d5fd1;
+  --blue-dark: #174ba6;
+  --blue-soft: #eaf1fd;
+  --line: #d9e4f5;
+  --bg: #f5f8fd;
+  --text: #1c2b44;
+  --muted: #5d6f8d;
+  --radius: 16px;
+}
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+main { flex: 1 0 auto; }
+
+.app-navbar { background: #fff; border-bottom: 1px solid var(--line); box-shadow: 0 1px 8px rgba(15, 39, 71, 0.05); }
+.app-navbar .navbar-brand { color: var(--navy); font-weight: 700; }
+.brand-icon { background: var(--blue); color: #fff; border-radius: 10px; padding: 6px 8px; font-size: 1rem; }
+.app-navbar .nav-link { color: var(--navy); font-weight: 500; border-radius: 999px; padding: 0.4rem 0.9rem; transition: background 0.2s, color 0.2s; }
+.app-navbar .nav-link:hover, .app-navbar .nav-link:focus-visible { background: var(--blue-soft); color: var(--blue); }
+
+.hero { background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%); color: #fff; padding: 4rem 0 5.5rem; }
+.hero-small { padding: 2.5rem 0 4rem; }
+.hero-title { font-weight: 800; letter-spacing: -0.02em; font-size: clamp(2rem, 5vw, 3.2rem); margin-bottom: 0.75rem; }
+.hero-subtitle { font-size: 1.15rem; max-width: 640px; margin: 0 auto; color: #dbe7fb; }
+
+.content-wrap { margin-top: -3rem; padding-bottom: 2rem; position: relative; }
+
+.app-card { border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 4px 18px rgba(15, 39, 71, 0.07); background: #fff; }
+.card-body h2, .card-body h3 { color: var(--navy); }
+
+.btn { transition: transform 0.15s, box-shadow 0.2s, background-color 0.2s; }
+.btn-primary { background-color: var(--blue); border-color: var(--blue); }
+.btn-primary:hover, .btn-primary:focus-visible { background-color: var(--blue-dark); border-color: var(--blue-dark); }
+.btn-outline-primary { color: var(--blue); border-color: var(--blue); }
+.btn-outline-primary:hover { background-color: var(--blue); border-color: var(--blue); }
+.btn:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(29, 95, 209, 0.2); }
+.form-select, .form-control { border-color: var(--line); }
+.form-select:focus, .form-control:focus { border-color: var(--blue); box-shadow: 0 0 0 0.2rem rgba(29, 95, 209, 0.15); }
+
+.drop-zone { border: 2px dashed #9db9e8; border-radius: var(--radius); background: var(--blue-soft); text-align: center; padding: 2rem 1rem; transition: background 0.2s, border-color 0.2s; cursor: pointer; }
+.drop-zone:hover, .drop-zone:focus-visible, .drop-zone.dragover { background: #dce9fc; border-color: var(--blue); outline: none; }
+.drop-icon { font-size: 2.6rem; color: var(--blue); display: block; margin-bottom: 0.5rem; }
+
+.preview-box { background: var(--blue-soft); border-radius: 12px; padding: 0.9rem; }
+.record-timer { color: #c62828; font-weight: 600; }
+.record-timer i { font-size: 0.6rem; animation: blink 1s infinite; }
+@keyframes blink { 50% { opacity: 0.2; } }
+
+.stat { background: var(--blue-soft); border-radius: 12px; padding: 0.75rem 1rem; height: 100%; }
+.stat-label { display: block; font-size: 0.78rem; color: var(--muted); }
+.stat-value { display: block; font-weight: 600; color: var(--navy); word-break: break-word; }
+
+.badge-soft { background: var(--blue-soft); color: var(--blue); font-weight: 500; border-radius: 999px; margin-left: 0.4rem; }
+
+.transcript-area { font-size: 0.97rem; line-height: 1.6; border-radius: 12px; }
+.transcript-preview { background: var(--blue-soft); border-radius: 12px; padding: 1rem; max-height: 220px; overflow: auto; white-space: pre-wrap; font-family: inherit; font-size: 0.93rem; }
+.regen-group { max-width: 360px; }
+.regen-group .form-select { max-width: 120px; border-radius: 999px 0 0 999px; }
+.regen-group .btn { border-radius: 0 999px 999px 0; }
+
+.action-table thead th { background: var(--blue-soft); color: var(--navy); border-bottom: 2px solid var(--line); }
+.feature-icon { font-size: 1.6rem; color: var(--blue); display: block; margin-bottom: 0.4rem; }
+
+.app-footer { background: var(--navy); color: #cfdcf3; padding: 1.5rem 0; margin-top: 2rem; }
