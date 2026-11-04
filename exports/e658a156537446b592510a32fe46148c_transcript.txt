@@ -1,0 +1,8 @@
+MEETING TRANSCRIPT
+==================
+File: sample-speech-short.wav
+Duration: 0:05
+Language: English
+Generated: 2026-11-04 06:22 UTC
+
+This sample voice recording is used for testing speech recognition systems.

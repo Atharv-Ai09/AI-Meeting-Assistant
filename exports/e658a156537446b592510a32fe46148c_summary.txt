@@ -1,0 +1,24 @@
+MEETING SUMMARY
+===============
+File: sample-speech-short.wav
+Duration: 0:05
+Language: English
+Generated: 2026-11-04 06:22 UTC
+
+MEETING SUMMARY (AI-generated)
+------------------------------
+This sample voice recording is used for testing speech recognition systems.
+
+KEY DISCUSSION POINTS (extracted from transcript)
+------------------------------
+1. This sample voice recording is used for testing speech recognition systems.
+
+DECISIONS MADE (extracted from transcript)
+------------------------------
+No explicit decisions identified.
+
+ACTION ITEMS (extracted from transcript)
+------------------------------
+No specific action items identified.
+
+Note: the Meeting Summary is AI-generated (it may rephrase the transcript). Key points, decisions and action items are sentences extracted directly from the transcript; nothing is invented.
