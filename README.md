@@ -1,232 +1,449 @@
-# Speech Recognition and Meeting Summarization Using AI
 
-## 1. Project title
-**Speech Recognition and Meeting Summarization Using AI** (web application name: *AI Meeting Assistant*)
+# 🎙️ AI Meeting Assistant
+## Speech Recognition and Meeting Summarization Using AI
 
-## 2. Student details
-| | |
+An AI-powered web application that converts audio recordings into text transcripts and generates concise meeting summaries. The system uses OpenAI Whisper for speech recognition and Hugging Face Transformers for natural language processing and text summarization.
+
+The application provides a simple and user-friendly web interface that allows users to upload audio recordings, generate transcripts and summaries, and download the results for future reference.
+
+---
+
+## 📌 Project Overview
+
+Meetings, lectures, interviews, and discussions often contain important information that takes considerable time to review. This project provides a web-based solution that automatically processes audio recordings and generates:
+
+- A complete text transcript of the spoken conversation
+- A concise summary of the conversation
+- Downloadable transcript and summary files
+- A simple interface for uploading and processing audio recordings
+
+The project demonstrates the practical application of Artificial Intelligence, Speech Recognition, Natural Language Processing, and Deep Learning.
+
+---
+
+## 🎯 Objectives
+
+- Convert speech from audio recordings into text.
+- Generate concise summaries from long conversations.
+- Reduce the time required to review meeting recordings.
+- Provide downloadable transcripts and summaries.
+- Develop a user-friendly web application using Flask.
+- Demonstrate the practical use of AI, speech recognition, and NLP.
+- Understand the integration of pretrained transformer models into a web application.
+
+---
+
+## ✨ Key Features
+
+| Feature | Description |
 |---|---|
-| Student name | ATHARV SHETTY |
-| Register number | 8080110 |
-| College | GTTC Belagavi |
-| Department | Artificial Intelligence and Machine Learning (5th semester Diploma) |
+| 🎵 Audio Upload | Upload audio recordings for processing |
+| 🎙️ Speech Recognition | Convert speech into text using Whisper |
+| 🧠 Text Summarization | Generate concise summaries using a transformer model |
+| 📝 Transcript Display | View the complete recognized conversation |
+| 📄 Summary Display | Read the summarized meeting content |
+| ⬇️ Download Transcript | Download the transcript as a text file |
+| ⬇️ Download Summary | Download the summary as a text file |
+| 🔊 Audio Processing | Validate and convert audio using FFmpeg |
+| 🌐 Web Interface | Access the application through a browser |
+| 🧪 Automated Testing | Test application components using Pytest |
 
-## 3. Project overview
-AI Meeting Assistant turns a meeting recording into a written transcript and a concise report containing a summary, key discussion points, decisions and action items. Audio can be uploaded or recorded in the browser. Speech recognition uses **OpenAI Whisper** and summarisation uses a **Hugging Face Transformers** model. Both are open-source and run locally, so no paid API key is required.
+---
 
-## 4. Problem statement
-Meetings contain decisions and tasks that are easily forgotten. Writing minutes by hand is slow and error-prone. This project automates the process: audio to text, text to a short summary, and extraction of action items, while keeping the extracted facts grounded in what was actually said.
+## 📸 Project Screenshots
 
-## 5. Objectives
-1. Convert meeting audio to text with an AI speech recognition model.
-2. Generate a concise summary of long transcripts using a lightweight model that runs on a CPU.
-3. Extract decisions and action items (task, responsible person, deadline) without inventing information.
-4. Let users review and edit the transcript and regenerate the summary.
-5. Export the transcript, summary and full report as TXT files.
-6. Provide a clean, responsive, secure web interface.
+### 1. Home Page
 
-## 6. Features
-- Upload (drag-and-drop) or record audio in the browser; audio preview player
-- Formats: WAV, MP3, M4A, FLAC, OGG, WEBM (anything FFmpeg can decode); 100 MB default limit
-- Whisper `base` or `small`, automatic language detection or manual language choice, CPU by default and GPU when available
-- Long audio is split into chunks at quiet moments, transcribed, and merged
-- Long transcripts are chunked for summarisation; short / medium / detailed summary lengths
-- Key points, decisions and action items are **extracted from transcript sentences** (never invented). Missing owners/deadlines show "Not specified."; no tasks shows "No specific action items identified."
-- Results page with editable transcript, copy button, action-items table, regenerate summary, TXT downloads, "Process Another Meeting"
-- Secure file handling, input validation, JSON API, logging, automatic cleanup of temporary files and old reports
+The home page provides the main interface for the application. Users can upload an audio recording and begin the transcription and summarization process.
 
-## 7. Technology stack
-| Layer | Technology |
+![AI Meeting Assistant Home Page](DOCUMENTS/SCREENSHOT/HOME%20PAGE.JPG)
+
+### 2. Transcript Output
+
+The transcript section displays the text recognized from the uploaded audio. Users can review the generated transcript and download it for future reference.
+
+![AI Meeting Assistant Transcript](DOCUMENTS/SCREENSHOT/TRANSCRIPT.JPG)
+
+### 3. Meeting Summary
+
+The summary section presents the main information from the meeting in a concise format. It helps users understand the key discussion points without reviewing the entire transcript.
+
+![AI Meeting Assistant Summary](DOCUMENTS/SCREENSHOT/SUMMARY.JPG)
+
+> **Note:** Save your screenshots using the exact filenames shown above inside the `DOCUMENTS/SCREENSHOT/` folder. If your filenames are different, update the image paths accordingly.
+
+---
+
+## 🧠 System Workflow
+
+The application follows the workflow shown below:
+
+```text
+             Audio Recording
+                    |
+                    v
+               Audio Upload
+                    |
+                    v
+          Audio Preprocessing
+                (FFmpeg)
+                    |
+                    v
+          Speech Recognition
+                (Whisper)
+                    |
+                    v
+          Generated Transcript
+                    |
+                    v
+          Text Summarization
+          (Transformer Model)
+                    |
+                    v
+             Meeting Summary
+                    |
+                    v
+          View and Download Results
+```
+
+### Workflow Explanation
+
+1. **Audio Upload:** The user uploads an audio recording through the web interface.
+2. **Audio Preprocessing:** The audio file is validated and converted into a suitable format using FFmpeg.
+3. **Speech Recognition:** Whisper processes the audio and converts spoken words into text.
+4. **Transcript Generation:** The recognized speech is displayed as a text transcript.
+5. **Text Summarization:** A transformer-based summarization model processes the transcript.
+6. **Summary Generation:** The system generates a concise summary containing the main information.
+7. **Result Display:** The transcript and summary are displayed on the web interface.
+8. **Download:** The user can download the generated transcript and summary.
+
+---
+
+## 🛠️ Technologies Used
+
+| Technology | Purpose |
 |---|---|
-| Frontend | HTML5, CSS3, JavaScript, Bootstrap 5, Bootstrap Icons |
-| Backend | Python, Flask, REST API, Werkzeug, python-dotenv |
-| Speech recognition | OpenAI Whisper (open-source), PyTorch |
-| Summarisation | Hugging Face Transformers (`sshleifer/distilbart-cnn-12-6` by default) |
-| Audio | FFmpeg, librosa, soundfile, pydub, NumPy |
+| Python | Main programming language |
+| Flask | Backend web framework |
+| OpenAI Whisper | Speech-to-text transcription |
+| Hugging Face Transformers | AI-based text summarization |
+| FFmpeg | Audio conversion and processing |
+| HTML | Web page structure |
+| CSS | Web page styling |
+| JavaScript | Frontend interactions |
+| Pytest | Automated testing |
+| Git and GitHub | Version control and project hosting |
 
-## 8. System architecture
-```
-Browser (upload / record)
-        |  multipart POST /api/process
-        v
-Flask routes (backend/routes.py)  -->  validators.py
-        v
-services.py  -->  utils/audio_processing.py   validate -> convert (16 kHz mono WAV) -> split into chunks
-        |
-        +--> models/speech_model.py           Whisper (lazy-loaded, cached)  -> transcript
-        +--> models/summarization_model.py    Transformers (lazy-loaded)     -> summary
-        +--> utils/text_utils.py              key points, decisions, action items (from transcript)
-        v
-exports/<id>_*.txt + <id>.json  -->  /result/<id>  and  /download/<file>
-```
-More detail: `docs/system_architecture.md`.
+---
 
-## 9. Project folder structure
-```
-Speech-Recognition-Meeting-Summarization/
-├── app.py  config.py  requirements.txt  README.md  .env.example  .gitignore  run.bat  run.sh
-├── backend/    __init__.py  routes.py  services.py  validators.py
-├── models/     __init__.py  speech_model.py  summarization_model.py
-├── utils/      __init__.py  audio_processing.py  file_utils.py  text_utils.py
-├── templates/  base.html  index.html  result.html  about.html  error.html
-├── static/     css/style.css  js/main.js  images/
-├── uploads/    (temporary working files, auto-deleted)
-├── exports/    (generated reports, auto-deleted after 24 h)
-├── tests/      test_audio_processing.py  test_text_utils.py  test_routes.py
-└── docs/       project_overview.md  system_architecture.md  user_manual.md
+## 📁 Project Structure
+
+```text
+AI-Meeting-Assistant/
+│
+├── app.py
+│
+├── backend/
+│   ├── routes.py
+│   └── services.py
+│
+├── models/
+│   ├── __init__.py
+│   ├── speech_model.py
+│   └── summarization_model.py
+│
+├── utils/
+│   ├── __init__.py
+│   └── audio_processing.py
+│
+├── templates/
+│   └── index.html
+│
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   │
+│   └── js/
+│       └── script.js
+│
+├── exports/
+│
+├── DOCUMENTS/
+│   ├── SCREENSHOT/
+│   │   ├── HOME PAGE.JPG
+│   │   ├── TRANSCRIPT.JPG
+│   │   └── SUMMARY.JPG
+│   │
+│   └── PROJECT DEMO.mp4
+│
+├── tests/
+│   └── test_app.py
+│
+├── requirements.txt
+├── run.bat
+└── README.md
 ```
 
-## 10. Installation instructions
+> The structure above represents the main project components. Additional files may be present depending on the implementation.
 
-### Python version (important)
-The AI libraries (PyTorch, Whisper and their dependencies) release support for new Python versions with a delay. **This project is configured for Python 3.12 (3.11 also works).** Compatibility with Python 3.14 was **not verified** while preparing this project (the build environment had no internet access to check package wheels), so it is not claimed. Python 3.12 can be installed side by side with 3.14; your existing Python is not affected.
+---
 
-Windows 11 (PowerShell):
-```powershell
-winget install Python.Python.3.12
-py -0p            # lists installed versions; confirm 3.12 is present
-```
-Linux (Ubuntu/Debian):
+## ⚙️ Requirements
+
+Before running the application, ensure that the following software is installed:
+
+- Python 3.12
+- FFmpeg
+- Git
+- A modern web browser
+- Internet connection for initial AI model downloads
+
+### Hardware Requirements
+
+| Component | Requirement |
+|---|---|
+| Processor | Intel or AMD processor |
+| RAM | 8 GB recommended |
+| Storage | Sufficient space for Python packages and AI models |
+| GPU | Optional |
+| Internet | Required for initial model downloads |
+
+The application can run using CPU inference, although processing may take longer than GPU inference.
+
+---
+
+## 💻 Installation and Setup
+
+Follow these steps to install and run the project on Windows.
+
+### Step 1: Clone the Repository
+
+Open PowerShell or the terminal and execute:
+
 ```bash
-sudo apt update
-sudo apt install python3.12 python3.12-venv python3-pip
+git clone https://github.com/Atharv-Ai09/AI-Meeting-Assistant.git
 ```
-(If your distribution has no `python3.12` package, use 3.11 or install 3.12 from python.org / deadsnakes.)
 
-## 11. FFmpeg installation
-FFmpeg is required to decode audio.
+### Step 2: Open the Project Folder
 
-Windows 11 (PowerShell):
-```powershell
-winget install Gyan.FFmpeg
-# close and reopen PowerShell, then verify:
-ffmpeg -version
-ffprobe -version
-```
-Linux:
 ```bash
-sudo apt install ffmpeg
-ffmpeg -version
+cd AI-Meeting-Assistant
 ```
-If FFmpeg is installed but not on PATH, set `FFMPEG_BINARY` and `FFPROBE_BINARY` in `.env`.
 
-## 12. Virtual environment setup
-Windows PowerShell (inside the project folder):
-```powershell
-cd path\to\Speech-Recognition-Meeting-Summarization
+### Step 3: Create a Virtual Environment
+
+Make sure Python 3.12 is installed.
+
+```bash
 py -3.12 -m venv .venv
+```
+
+### Step 4: Activate the Virtual Environment
+
+For Windows PowerShell:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\.venv\Scripts\Activate.ps1
 ```
-If activation is blocked: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, then activate again.
 
-Linux:
+For Windows Command Prompt:
+
+```cmd
+.venv\Scripts\activate.bat
+```
+
+### Step 5: Install Python Dependencies
+
+Upgrade pip:
+
 ```bash
-cd Speech-Recognition-Meeting-Summarization
-python3.12 -m venv .venv
-source .venv/bin/activate
+python -m pip install --upgrade pip
 ```
 
-## 13. Dependency installation
-Windows PowerShell (venv active):
-```powershell
-python -m pip install --upgrade pip setuptools wheel
-python -m pip install -r requirements.txt
-copy .env.example .env
-```
-Linux:
+Install the required packages:
+
 ```bash
-python -m pip install --upgrade pip setuptools wheel
-python -m pip install -r requirements.txt
-cp .env.example .env
+pip install -r requirements.txt
 ```
-This downloads several hundred MB (PyTorch). The default Windows PyTorch wheel runs on the CPU. For an NVIDIA GPU, install the CUDA build from https://pytorch.org/get-started/locally/ and set `DEVICE=auto` (or `cuda`) in `.env`.
 
-## 14. How to run the application
-Easiest option:
-- Windows: double-click `run.bat` (creates the venv, installs dependencies on first run, starts the server)
-- Linux: `./run.sh`
+### Step 6: Install FFmpeg
 
-Manual:
-```powershell
-.\.venv\Scripts\Activate.ps1
+Download FFmpeg from the official website:
+
+https://ffmpeg.org/download.html
+
+After installation, add FFmpeg to your system PATH.
+
+Verify the installation:
+
+```bash
+ffmpeg -version
+```
+
+If FFmpeg is installed correctly, the command displays the installed version and configuration information.
+
+### Step 7: Run the Application
+
+Start the Flask application:
+
+```bash
 python app.py
 ```
+
+Open the following address in your web browser:
+
+http://127.0.0.1:5000
+
+> The first run may download the required AI models. Model loading and audio processing may take some time depending on your computer and internet connection.
+
+---
+
+## 🚀 How to Use the Application
+
+1. Install the required dependencies.
+2. Run the Flask application using `python app.py`.
+3. Open the application in your browser.
+4. Upload a supported audio recording.
+5. Start the audio processing operation.
+6. The application preprocesses the audio using FFmpeg.
+7. Whisper converts the spoken conversation into text.
+8. The summarization model generates a concise meeting summary.
+9. Review the transcript and summary on the web interface.
+10. Download the transcript and summary files if required.
+
+---
+
+## 🧪 Testing
+
+The project includes automated tests for application components and API functionality.
+
+### Run Automated Tests
+
+Execute the following command from the project directory:
+
 ```bash
-source .venv/bin/activate && python app.py
-```
-Open **http://127.0.0.1:5000**.
-
-> **First run:** the first transcription downloads the Whisper model (base ≈ 140 MB, small ≈ 460 MB) and the first summary downloads the summarisation model (≈ 1.2 GB). This may take several minutes and needs internet. Later runs use the cached models.
-
-## 15. How to use the application
-1. Open the home page.
-2. Upload or drag an audio file, **or** press *Record audio*, speak, then *Stop recording* (allow microphone access; works on `localhost`).
-3. Check the preview, then pick the Whisper model, summary length and language (or leave "Automatic detection").
-4. Press **Transcribe & Summarize** and wait. Long recordings take time on a CPU; real-time transcription is not supported.
-5. Review the result. On the full results page you can edit the transcript, copy it, regenerate the summary and download TXT files.
-6. Press **Process Another Meeting** to start again.
-
-## 16. API documentation
-All API responses are JSON. Errors look like `{"success": false, "error": "message"}`.
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/` | Home page |
-| GET | `/about` | About page |
-| GET | `/result/<report_id>` | Results page for a processed meeting |
-| POST | `/api/transcribe` | multipart: `audio` (file), optional `whisper_model` (`base`/`small`), `language` (`auto`, `en`, ...). Returns transcript, duration, language |
-| POST | `/api/summarize` | JSON: `transcript`, optional `summary_length` (`short`/`medium`/`detailed`), optional `report_id` (updates a stored report). Returns summary, key points, decisions, action items |
-| POST | `/api/process` | multipart (same fields as transcribe + `summary_length`). Full workflow; returns `report`, `result_url`, `downloads` |
-| GET | `/health` | Application status (FFmpeg, installed packages, loaded models) |
-| GET | `/download/<filename>` | Download a generated TXT report (`<id>_transcript.txt`, `<id>_summary.txt`, `<id>_report.txt`) |
-
-Status codes: `200` OK, `400` invalid input, `404` not found, `413` file too large, `415` unsupported audio type, `422` empty/corrupted audio or empty transcript or no speech, `500` unexpected error, `503` FFmpeg or AI model unavailable.
-
-Example (PowerShell, using curl.exe):
-```powershell
-curl.exe -X POST -F "audio=@meeting.mp3" -F "summary_length=medium" http://127.0.0.1:5000/api/process
-curl.exe -X POST -H "Content-Type: application/json" -d "{\"transcript\":\"John will send the report by Friday. ...\"}" http://127.0.0.1:5000/api/summarize
+python -m pytest
 ```
 
-## 17. Testing instructions
-The tests use only the standard `unittest` module and mocked model inference, so no AI models are downloaded. Tests that need FFmpeg are skipped automatically if it is missing.
+### Manual Testing
 
-Windows PowerShell (venv active):
-```powershell
-python -m unittest discover -s tests -t . -v
-```
-Linux:
-```bash
-python -m unittest discover -s tests -t . -v
-```
-(`pytest` also works if you install it: `pip install pytest` then `pytest -v`.)
+The application should also be tested using real audio recordings.
 
-## 18. Troubleshooting
-| Problem | Solution |
+| Test Case | Expected Result |
 |---|---|
-| `ffmpeg`/`ffprobe` not found, HTTP 503 | Install FFmpeg (section 11), reopen the terminal, or set `FFMPEG_BINARY`/`FFPROBE_BINARY` in `.env`. |
-| `pip install` fails on Python 3.14 | Use Python 3.12 (section 10). |
-| `openai-whisper` build error (`pkg_resources`, setuptools) | Run `python -m pip install --upgrade pip setuptools wheel` first, then install requirements again. |
-| "Could not load the Whisper model" | Check internet (first download), free disk space and RAM; try the `base` model. |
-| Very slow processing | Use `base`, shorter audio, or a GPU build of PyTorch. CPU processing is much slower than real time for long files. |
-| Microphone does not work | Allow microphone permission; open the app via `http://127.0.0.1:5000` or `localhost`; use Chrome/Edge/Firefox. |
-| Page looks unstyled | Bootstrap loads from a CDN, so the browser needs internet access. |
-| `Activate.ps1` blocked | `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` |
-| Port already in use | Change `PORT` in `.env`. |
-| Nothing detected / "Thank you" only | Whisper can output filler text for silent or very noisy audio; use clearer audio. |
+| Open application | Home page loads successfully |
+| Upload valid audio | Audio is accepted |
+| Upload invalid file | Appropriate error message is displayed |
+| Process audio | Speech recognition begins |
+| Generate transcript | Recognized text is displayed |
+| Generate summary | Concise summary is displayed |
+| Download transcript | Transcript file is downloaded |
+| Download summary | Summary file is downloaded |
 
-## 19. Limitations
-- Accuracy depends on audio quality, accents, overlapping speakers and background noise. There is no speaker identification (diarisation).
-- The summary is generated by an AI model and can omit or rephrase details; always compare with the transcript.
-- Decisions and action items are found with keyword/pattern rules, so they can miss items phrased unusually or flag a sentence that is not really a task. Responsible person detection relies on names being capitalised in the transcript.
-- The summarisation model and extraction rules are designed for English transcripts.
-- Processing on a CPU is slower than real time for long recordings. Real-time transcription is not provided.
-- Reports are stored on the local machine for 24 hours; the app has no user accounts and is intended for local/demo use (run it behind a production server and HTTPS before any public deployment).
+---
 
-## 20. Future enhancements
-Speaker diarisation, multilingual summarisation, PDF/DOCX export, live transcription, background job queue with true progress reporting, user accounts, and fine-tuned meeting-specific models.
+## 📊 Expected Output
 
-## 21. Conclusion
-The project demonstrates a complete AI pipeline: audio engineering with FFmpeg, speech recognition with Whisper, abstractive summarisation with Transformers, and transcript-grounded extraction of decisions and action items, delivered through a secure Flask web application with automated tests and documentation.
-#   A I - M e e t i n g - A s s i s t a n t  
- 
+After processing an audio recording, the application provides the following results:
+
+### 1. Transcript
+
+The complete recognized spoken content from the uploaded audio recording.
+
+### 2. Meeting Summary
+
+A concise overview of the conversation containing the main discussion points and important information.
+
+### 3. Downloadable Files
+
+The user can download the generated transcript and summary as text files for future reference.
+
+### Example Output
+
+```text
+Transcript:
+The complete recognized conversation appears here.
+
+Summary:
+The meeting discussed the main project objectives,
+important updates, and upcoming tasks.
+```
+
+> The above is an illustrative example. Actual output depends on the uploaded audio recording.
+
+---
+
+## 🔐 Limitations
+
+- Transcription accuracy may decrease when audio contains background noise.
+- Speech recognition performance may vary depending on accents and pronunciation.
+- Processing time depends on recording length and hardware performance.
+- Initial model downloads require an internet connection.
+- CPU-based inference may be slower than GPU-based inference.
+- Generated summaries may omit minor details from the original conversation.
+- The quality of the output depends on the selected AI models and the clarity of the recording.
+
+---
+
+## 🔮 Future Enhancements
+
+The project can be improved by adding the following features:
+
+- Speaker identification and diarization
+- Support for multiple languages
+- Automatic action-item extraction
+- Meeting highlights and key-point detection
+- Searchable meeting history
+- Cloud storage and sharing
+- GPU acceleration for faster processing
+- Export summaries to PDF and DOCX
+- Real-time meeting transcription
+- Improved summarization accuracy
+- User authentication and personalized meeting history
+
+---
+
+## 🎥 Video Demonstration
+
+Watch the project demonstration to understand the complete workflow, from uploading an audio recording to generating the transcript and meeting summary.
+
+### AI Meeting Assistant Demo
+
+[![AI Meeting Assistant Demo](DOCUMENTS/SCREENSHOT/HOME%20PAGE.JPG)](DOCUMENTS/PROJECT%20DEMO.mp4)
+
+▶️ **[Click here to watch the complete project demonstration](DOCUMENTS/PROJECT%20DEMO.mp4)**
+
+The video demonstrates:
+
+- Application home page
+- Audio recording upload
+- Speech recognition process
+- Generated transcript
+- Meeting summary
+- Downloading the results
+
+> **Note:** GitHub does not reliably play MP4 videos embedded as ordinary Markdown links. The link above opens the video file. For a more accessible demonstration, you can also upload the video to YouTube and add its link here.
+
+---
+
+## 👨‍💻 Developer
+
+**Atharv Shetty**
+
+Diploma in Artificial Intelligence and Machine Learning  
+GTTC Belagavi, Karnataka, India
+
+GitHub: [Atharv-Ai09](https://github.com/Atharv-Ai09)
+
+Project: [AI Meeting Assistant](https://github.com/Atharv-Ai09/AI-Meeting-Assistant)
+
+---
+
+## 📄 License
+
+This project is developed for educational and academic purposes.
+
+---
+
+⭐ **If you find this project useful, consider giving the repository a star on GitHub!**
