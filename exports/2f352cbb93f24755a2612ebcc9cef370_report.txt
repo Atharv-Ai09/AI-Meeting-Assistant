@@ -1,9 +1,9 @@
-MEETING SUMMARY
-===============
+COMPLETE MEETING REPORT
+=======================
 File: sample-speech-short.wav
 Duration: 0:05
-Language: Hindi
-Generated: 2026-11-03 12:41 UTC
+Language: English
+Generated: 2026-11-09 06:50 UTC
 
 MEETING SUMMARY (AI-generated)
 ------------------------------
@@ -22,3 +22,7 @@ ACTION ITEMS (extracted from transcript)
 No specific action items identified.
 
 Note: the Meeting Summary is AI-generated (it may rephrase the transcript). Key points, decisions and action items are sentences extracted directly from the transcript; nothing is invented.
+
+FULL TRANSCRIPT
+------------------------------
+This sample voice recording is used for testing speech recognition systems.

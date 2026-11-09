@@ -1,8 +1,0 @@
-MEETING TRANSCRIPT
-==================
-File: sample-speech-short.wav
-Duration: 0:05
-Language: Hindi
-Generated: 2026-11-03 12:41 UTC
-
-This sample voice recording is used for testing speech recognition systems.

@@ -1,11 +1,11 @@
 {
-  "id": "b52f70aed24048e2a99aac05eb8ea6e4",
-  "created_at": "2026-11-03 12:41 UTC",
+  "id": "96440a13f3614386be480ad940764b59",
+  "created_at": "2026-11-09 06:45 UTC",
   "filename": "sample-speech-short.wav",
   "duration_seconds": 5.13,
   "duration_text": "0:05",
-  "language_code": "hi",
-  "language": "Hindi",
+  "language_code": "en",
+  "language": "English",
   "whisper_model": "base",
   "transcript": "This sample voice recording is used for testing speech recognition systems.",
   "summary": "This sample voice recording is used for testing speech recognition systems.",
@@ -17,12 +17,11 @@
   "action_items": [],
   "summary_length": "medium",
   "warnings": [
-    "The transcript is very short, so it is shown as the summary without AI rewriting.",
-    "The summarisation model and the extraction rules are designed for English. Results for other languages may be limited."
+    "The transcript is very short, so it is shown as the summary without AI rewriting."
   ],
   "files": {
-    "transcript": "b52f70aed24048e2a99aac05eb8ea6e4_transcript.txt",
-    "summary": "b52f70aed24048e2a99aac05eb8ea6e4_summary.txt",
-    "report": "b52f70aed24048e2a99aac05eb8ea6e4_report.txt"
+    "transcript": "96440a13f3614386be480ad940764b59_transcript.txt",
+    "summary": "96440a13f3614386be480ad940764b59_summary.txt",
+    "report": "96440a13f3614386be480ad940764b59_report.txt"
   }
 }
